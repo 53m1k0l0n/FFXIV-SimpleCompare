@@ -120,7 +120,7 @@ namespace SimpleCompare
 
         private List<InvItem> GetEquippedItemsByType(InventoryType inventoryType)
         {
-            List<InvItem> items = new List<InvItem>();
+            List<InvItem> items = new();
             unsafe
             {
                 var equippedItems = InventoryManager.Instance()->GetInventoryContainer(InventoryType.EquippedItems);
@@ -151,7 +151,7 @@ namespace SimpleCompare
             bonusMapA = BonusMapA(bonusMapA, itemA);
             bonusMapB = BonusMapB(bonusMapB, itemB);
 
-            HashSet<byte> bonusTypes = new HashSet<byte>();
+            HashSet<byte> bonusTypes = new();
             bonusTypes = BonusTypes(bonusTypes, bonusMapA, bonusMapB);
 
             foreach (var bonusType in bonusTypes)
@@ -177,7 +177,7 @@ namespace SimpleCompare
 
 
 
-            HashSet<byte> bonusTypes = new HashSet<byte>();
+            HashSet<byte> bonusTypes = new();
             bonusTypes = BonusTypes(bonusTypes, bonusMapA, bonusMapB);
 
             foreach (var bonusType in bonusTypes)
@@ -189,7 +189,7 @@ namespace SimpleCompare
             }
         }
 
-        private Dictionary<byte, short> BonusMapA(Dictionary<byte, short> bonusMapA, InvItem itemA)
+        private static Dictionary<byte, short> BonusMapA(Dictionary<byte, short> bonusMapA, InvItem itemA)
         {
             if (!bonusMapA.TryAdd(((byte)ItemBonusType.DEFENSE), (short)itemA.Item.DefensePhys))
                 bonusMapA[((byte)ItemBonusType.DEFENSE)] += (short)itemA.Item.DefensePhys;
@@ -212,7 +212,7 @@ namespace SimpleCompare
             return bonusMapA;
         }
 
-        private Dictionary<byte, short> BonusMapB(Dictionary<byte, short> bonusMapB, InvItem itemB)
+        private static Dictionary<byte, short> BonusMapB(Dictionary<byte, short> bonusMapB, InvItem itemB)
         {
             if (!bonusMapB.TryAdd(((byte)ItemBonusType.DEFENSE), (short)itemB.Item.DefensePhys))
                 bonusMapB[((byte)ItemBonusType.DEFENSE)] += (short)itemB.Item.DefensePhys;
@@ -236,7 +236,7 @@ namespace SimpleCompare
             return bonusMapB;
         }
 
-        private HashSet<byte> BonusTypes(HashSet<byte> bonusTypes, Dictionary<byte, short> bonusMapA, Dictionary<byte, short> bonusMapB)
+        private static HashSet<byte> BonusTypes(HashSet<byte> bonusTypes, Dictionary<byte, short> bonusMapA, Dictionary<byte, short> bonusMapB)
         {
             bonusTypes.UnionWith(bonusMapA.Keys);
             bonusTypes.UnionWith(bonusMapB.Keys);
@@ -244,10 +244,10 @@ namespace SimpleCompare
             return bonusTypes;
         }
 
-        private Dictionary<byte, short> GetItemStats(InvItem invItem)
+        private static Dictionary<byte, short> GetItemStats(InvItem invItem)
         {
-            HashSet<byte> bonusTypes = new HashSet<byte>();
-            Dictionary<byte, short> bonusMap = new Dictionary<byte, short>();
+            HashSet<byte> bonusTypes = new();
+            Dictionary<byte, short> bonusMap = new();
 
             foreach (var bonus in invItem.Item.UnkData59)
             {
@@ -262,7 +262,7 @@ namespace SimpleCompare
             }
 
 
-            Dictionary<byte, short> result = new Dictionary<byte, short>();
+            Dictionary<byte, short> result = new();
             foreach (var bonus in invItem.Item.UnkData73)
             {
                 if (bonusMap.ContainsKey(bonus.BaseParamSpecial))
@@ -280,7 +280,7 @@ namespace SimpleCompare
             return result;
         }
 
-        private void DrawStat(string name, int value)
+        private static void DrawStat(string name, int value)
         {
             if (value != 0)
             {
@@ -288,7 +288,7 @@ namespace SimpleCompare
             }
         }
 
-        private string BaseParamToName(byte baseParam)
+        private static string BaseParamToName(byte baseParam)
         {
             if (Enum.IsDefined(typeof(ItemBonusType), baseParam))
             {
@@ -300,7 +300,7 @@ namespace SimpleCompare
             return $"<unknown {baseParam}>";
         }
 
-        private InventoryType GetInventoryType(Item item)
+        private static InventoryType GetInventoryType(Item item)
         {
             if (item.EquipSlotCategory.Value.MainHand == 1)
             {
